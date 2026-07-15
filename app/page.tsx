@@ -39,44 +39,78 @@ export default function Home() {
     }
   };
 
-  return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
-      <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
-          Buildanta Material Helper
-        </h1>
-        <p className="text-gray-500 mb-6">
-          Enter a construction material and get quick buying tips.
-        </p>
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") handleSubmit();
+  };
 
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={material}
-            onChange={(e) => setMaterial(e.target.value)}
-            placeholder="e.g. TMT bar, cement, tiles"
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? "Loading..." : "Submit"}
-          </button>
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 mb-4 shadow-lg shadow-blue-600/30">
+            <span className="text-2xl">🏗️</span>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Buildanta Material Helper
+          </h1>
+          <p className="text-slate-400">
+            Get expert buying tips for any construction material in Kanpur
+          </p>
         </div>
 
-        {error && (
-          <div className="mt-4 text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-            {error}
+        {/* Card */}
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              value={material}
+              onChange={(e) => setMaterial(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="e.g. TMT bar, cement, tiles"
+              className="flex-1 bg-white/10 border border-white/10 text-white placeholder-slate-400 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            />
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20"
+            >
+              {loading ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  Thinking...
+                </>
+              ) : (
+                "Get Tips"
+              )}
+            </button>
           </div>
-        )}
 
-        {result && (
-          <div className="mt-6 bg-gray-50 border border-gray-200 rounded-lg px-4 py-4 whitespace-pre-wrap text-gray-800">
-            {result}
-          </div>
-        )}
+          {/* Error */}
+          {error && (
+            <div className="mt-4 flex items-start gap-2 text-red-300 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 animate-[fadeIn_0.2s_ease-in]">
+              <span>⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
+
+          {/* Result */}
+          {result && (
+            <div className="mt-5 bg-emerald-500/5 border border-emerald-500/20 rounded-xl px-5 py-4 animate-[fadeIn_0.3s_ease-in]">
+              <div className="flex items-center gap-2 mb-2">
+                <span>✅</span>
+                <span className="text-emerald-400 font-medium text-sm">
+                  Buying tips for &ldquo;{material}&rdquo;
+                </span>
+              </div>
+              <p className="text-slate-200 whitespace-pre-wrap leading-relaxed">
+                {result}
+              </p>
+            </div>
+          )}
+        </div>
+
+        
       </div>
     </main>
   );
